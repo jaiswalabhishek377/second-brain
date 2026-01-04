@@ -24,3 +24,168 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+@layer utilities {
+  .bg-grid-pattern {
+    background-size: 40px 40px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+  
+  .bg-gradient-radial {
+    background-image: radial-gradient(ellipse at center, var(--tw-gradient-stops));
+  }
+  
+  /* Hide the ugly scrollbar but keep scrolling functionality */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+@layer utilities {
+  /* This creates the moving color effect */
+  .animate-gradient-border {
+    background-size: 400% 400%;
+    animation: gradient-move 3s ease infinite;
+  }
+
+  @keyframes gradient-move {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Animated gradient text */
+  .animate-gradient-text {
+    animation: gradient-text 8s ease infinite;
+  }
+
+  @keyframes gradient-text {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* Aurora background animations */
+  .animate-aurora-1 {
+    animation: aurora-1 20s ease-in-out infinite;
+  }
+
+  .animate-aurora-2 {
+    animation: aurora-2 25s ease-in-out infinite;
+  }
+
+  .animate-aurora-3 {
+    animation: aurora-3 30s ease-in-out infinite;
+  }
+
+  @keyframes aurora-1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(20%, -20%) scale(1.1); }
+    66% { transform: translate(-10%, 10%) scale(0.9); }
+  }
+
+  @keyframes aurora-2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(-25%, 15%) scale(1.2); }
+    66% { transform: translate(15%, -25%) scale(0.85); }
+  }
+
+  @keyframes aurora-3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(10%, 20%) scale(0.95); }
+    66% { transform: translate(-20%, -15%) scale(1.15); }
+  }
+
+  /* Message slide-in animations */
+  .animate-slide-in-left {
+    animation: slide-in-left 0.4s ease-out;
+  }
+
+  .animate-slide-in-right {
+    animation: slide-in-right 0.4s ease-out;
+  }
+
+  @keyframes slide-in-left {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Slow pulse for icon */
+  .animate-pulse-slow {
+    animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  /* Shimmer sweep for input focus */
+  .animate-shimmer {
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  /* Orbiting loader dots */
+  .orbit-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    animation: orbit 1.6s ease-in-out infinite;
+  }
+  .orbit-delay-150 { animation-delay: 0.15s; }
+  .orbit-delay-300 { animation-delay: 0.3s; }
+
+  @keyframes orbit {
+    0% { transform: rotate(0deg) translateX(12px) rotate(0deg); opacity: 0.4; }
+    50% { transform: rotate(180deg) translateX(12px) rotate(-180deg); opacity: 1; }
+    100% { transform: rotate(360deg) translateX(12px) rotate(-360deg); opacity: 0.4; }
+  }
+
+  /* Floating particles */
+  .floating-dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.05) 70%, transparent 100%);
+    filter: blur(1px);
+    animation: float-slow 12s ease-in-out infinite;
+  }
+
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0) translateX(0); opacity: 0.5; }
+    33% { transform: translateY(-6px) translateX(4px); opacity: 0.8; }
+    66% { transform: translateY(6px) translateX(-4px); opacity: 0.4; }
+  }
+}
