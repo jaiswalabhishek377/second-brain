@@ -68,6 +68,16 @@ body {
     50% { background-position: 100% 50%; }
   }
 
+  /* Landing page gradient animation */
+  .animate-gradient {
+    animation: gradient-shift 6s ease infinite;
+  }
+
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
   /* Aurora background animations */
   .animate-aurora-1 {
     animation: aurora-1 20s ease-in-out infinite;
@@ -187,5 +197,95 @@ body {
     0%, 100% { transform: translateY(0) translateX(0); opacity: 0.5; }
     33% { transform: translateY(-6px) translateX(4px); opacity: 0.8; }
     66% { transform: translateY(6px) translateX(-4px); opacity: 0.4; }
+  }
+
+  /* Vertical glowing beam effect (Huly-style) */
+  .vertical-beam {
+    position: absolute;
+    right: 35%;
+    top: -10%;
+    width: 2px;
+    height: 120%;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(139, 92, 246, 0.1) 10%,
+      rgba(139, 92, 246, 0.6) 30%,
+      rgba(99, 102, 241, 0.8) 50%,
+      rgba(139, 92, 246, 0.6) 70%,
+      rgba(139, 92, 246, 0.1) 90%,
+      transparent 100%
+    );
+    filter: blur(1px);
+    animation: beam-pulse 4s ease-in-out infinite;
+  }
+
+  .vertical-beam::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 100%;
+    background: inherit;
+    filter: blur(30px);
+    opacity: 0.6;
+  }
+
+  .vertical-beam::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 100%;
+    background: inherit;
+    filter: blur(60px);
+    opacity: 0.3;
+  }
+
+  @keyframes beam-pulse {
+    0%, 100% { opacity: 0.6; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.02); }
+  }
+
+  /* Enhanced grid pattern */
+  .grid-overlay {
+    background-size: 50px 50px;
+    background-image: 
+      linear-gradient(to right, rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+  }
+
+  /* Spotlight effect */
+  .spotlight {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(
+      circle,
+      rgba(139, 92, 246, 0.15) 0%,
+      rgba(99, 102, 241, 0.08) 30%,
+      transparent 70%
+    );
+    pointer-events: none;
+    animation: spotlight-move 20s ease-in-out infinite;
+  }
+
+  @keyframes spotlight-move {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+    50% { transform: translate(-30%, -30%) scale(1.2); opacity: 0.6; }
+  }
+
+  /* Slow rotation for 3D icon */
+  .animate-spin-slow {
+    animation: spin-slow 8s linear infinite;
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 }

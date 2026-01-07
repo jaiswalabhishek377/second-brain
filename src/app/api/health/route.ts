@@ -18,7 +18,7 @@ export async function GET() {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
     // This will print available models to your VS Code Terminal
     // We try the standard flash model first
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     await model.generateContent("Test");
     status.gemini = "✅ CONNECTED";
   } catch (error) {
