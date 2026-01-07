@@ -10,6 +10,7 @@
 !.yarn/releases
 !.yarn/versions
 
+
 # testing
 /coverage
 
@@ -39,3 +40,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Ignore all README markdown files anywhere (case-insensitive)
+**/[Rr][Ee][Aa][Dd][Mm][Ee].[Mm][Dd]
+
+# But keep the main build doc tracked
+!WHAT_WE_BUILT.md
