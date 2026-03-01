@@ -53,10 +53,22 @@ export async function POST(req: Request) {
         });
         const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX_NAME!);
 
-        const embeddings = new GoogleGenerativeAIEmbeddings({
-          modelName: "text-embedding-004",
+        const baseEmbeddings = new GoogleGenerativeAIEmbeddings({
+          modelName: "models/gemini-embedding-001",
           apiKey: process.env.GEMINI_API_KEY,
         });
+
+        // Wrapper to truncate embeddings to 768 dimensions (Pinecone index size)
+        const embeddings = {
+          embedDocuments: async (texts: string[]) => {
+            const fullEmbeddings = await baseEmbeddings.embedDocuments(texts);
+            return fullEmbeddings.map(emb => emb.slice(0, 768));
+          },
+          embedQuery: async (text: string) => {
+            const fullEmbedding = await baseEmbeddings.embedQuery(text);
+            return fullEmbedding.slice(0, 768);
+          },
+        };
 
         // DOCUMENT-SCOPED SEARCH: Filter by docId (Option A) or all user docs (Option B)
         let results: any[] = [];

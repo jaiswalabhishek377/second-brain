@@ -121,10 +121,22 @@ export async function POST(req: Request) {
     });
     const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX_NAME!);
 
-    const embeddings = new GoogleGenerativeAIEmbeddings({
-      modelName: "text-embedding-004",
+    const baseEmbeddings = new GoogleGenerativeAIEmbeddings({
+      modelName: "models/gemini-embedding-001",
       apiKey: process.env.GEMINI_API_KEY,
     });
+
+    // Wrapper to truncate embeddings to 768 dimensions (Pinecone index size)
+    const embeddings = {
+      embedDocuments: async (texts: string[]) => {
+        const fullEmbeddings = await baseEmbeddings.embedDocuments(texts);
+        return fullEmbeddings.map(emb => emb.slice(0, 768));
+      },
+      embedQuery: async (text: string) => {
+        const fullEmbedding = await baseEmbeddings.embedQuery(text);
+        return fullEmbedding.slice(0, 768);
+      },
+    };
 
     // Test if embeddings API is working before processing all chunks
     console.log("Testing embedding API...");
@@ -135,7 +147,7 @@ export async function POST(req: Request) {
           error: "Embedding API returned empty vector. Please check your API quota." 
         }, { status: 503 });
       }
-      console.log(`✓ Embedding API working (dimension: ${testEmbed.length})`);
+      console.log(`✓ Embedding API working (dimension: ${testEmbed.length}) - truncated to match Pinecone index`);
     } catch (embedError: any) {
       console.error("Embedding API test failed:", embedError?.message);
       return NextResponse.json({ 
