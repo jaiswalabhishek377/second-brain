@@ -416,4 +416,4 @@ interface SharedChat {
 
 ## 📄 License
 
-This project is licensed under the **ISC License**. Free to use and modify for educational and personal projects.
+This project is licensed under the **MIT License**. Free to use and modify for educational and personal projects.
