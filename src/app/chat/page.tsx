@@ -332,7 +332,7 @@ export default function Home() {
     });
 
     // Create document
-    const doc = new Document({
+    const docxFile = new Document({
       sections: [
         {
           properties: {},
@@ -343,7 +343,7 @@ export default function Home() {
 
     // Generate and download
     try {
-      const blob = await Packer.toBlob(doc);
+      const blob = await Packer.toBlob(docxFile);
       const filename = `${sessionTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_${Date.now()}.docx`;
       saveAs(blob, filename);
       addToast("Chat exported to Word! 📄", "success");
@@ -1215,6 +1215,7 @@ export default function Home() {
       </div>
     </div>
   );
+}
 }
 
 
