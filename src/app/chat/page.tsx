@@ -351,42 +351,38 @@ export default function Home() {
       console.error("Export failed:", error);
       addToast("Export failed", "error");
     }
-  };
-
-  const shareChat = async () => {
+   const shareChat = async () => {
     if (messages.length === 0 || !user || !currentSessionId) {
       addToast("No chat to share", "info");
       return;
     }
 
     try {
-      const sessionTitle = sessions.find(s => s.id === currentSessionId)?.title || "Untitled Chat";
-      
-      const res = await fetch("/api/share", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          sessionId: currentSessionId,
-          userId: user.uid,
-          title: sessionTitle,
-          messages: messages.map(m => ({
-            role: m.role,
-            content: m.parts,
-            citations: m.citations
-          }))
-        }),
+      const sessionTitle = sessions.find((s) => s.id === currentSessionId)?.title || "Untitled Chat";
+      const shareDocRef = doc(collection(db, "sharedChats"));
+      const shareId = shareDocRef.id;
+
+      // Save shared chat directly from authenticated client to bypass server-side unauthenticated writes
+      await setDoc(shareDocRef, {
+        shareId,
+        sessionId: currentSessionId,
+        userId: user.uid,
+        title: sessionTitle,
+        messages: messages.map((m) => ({
+          role: m.role,
+          content: m.parts || "",
+          citations: m.citations || [],
+        })),
+        createdAt: serverTimestamp(),
+        views: 0,
       });
-      
-      const data = await res.json();
-      if (res.ok) {
-        await navigator.clipboard.writeText(data.shareUrl);
-        addToast("Share link copied to clipboard! 🔗", "success");
-      } else {
-        addToast("Failed to create share link", "error");
-      }
+
+      const shareUrl = `${window.location.origin}/shared/${shareId}`;
+      await navigator.clipboard.writeText(shareUrl);
+      addToast("Share link copied to clipboard! 🔗", "success");
     } catch (error) {
       console.error("Share failed:", error);
-      addToast("Share failed", "error");
+      addToast("Share failed: " + (error instanceof Error ? error.message : "Permission error"), "error");
     }
   };
 
@@ -403,13 +399,13 @@ export default function Home() {
     // Create session if needed
     let activeSession = currentSessionId;
     if (!activeSession) {
-      activeSession = (await createSession(userMessage.slice(0, 60) || "New Chat")) || null;
+      activeSession = (await createSession(userMessage.slice(0, 40) || "New Chat")) || null;
       setCurrentSessionId(activeSession);
     }
 
     // Add user message
     const userMsg: ChatMessage = { role: "user", parts: userMessage };
-    setMessages(prev => [...prev, userMsg]);
+    setMessages((prev) => [...prev, userMsg]);
 
     try {
       // Build message history for API
@@ -454,10 +450,27 @@ export default function Home() {
         setCurrentSessionId(finalSessionId);
       }
 
-      // Persist user and bot messages to Firestore client-side (non-blocking)
+      // Persist user and bot messages to Firestore client-side & update session title optimistically
       if (finalSessionId && user) {
         (async () => {
           try {
+            const newTitle = userMessage.slice(0, 40) || "New Chat";
+
+            // 1. Update React sessions state OPTIMISTICALLY right away
+            setSessions((prev) => {
+              const target = prev.find((s) => s.id === finalSessionId);
+              if (target) {
+                const shouldRename = !target.title || target.title === "New Chat";
+                return prev.map((s) =>
+                  s.id === finalSessionId
+                    ? { ...s, title: shouldRename ? newTitle : s.title, updatedAt: new Date() }
+                    : s
+                );
+              }
+              return [{ id: finalSessionId, title: newTitle, updatedAt: new Date() }, ...prev];
+            });
+
+            // 2. Persist message pair to Firestore messages subcollection
             const messagesCol = collection(db, `users/${user.uid}/sessions/${finalSessionId}/messages`);
             await addDoc(messagesCol, {
               userMessage: userMessage,
@@ -467,15 +480,15 @@ export default function Home() {
               hasContext: (data.citations && data.citations.length > 0) || false,
             });
 
-            // Update session title if currently "New Chat" or default
+            // 3. Update session title & timestamp in Firestore
             const currentSessionObj = sessions.find((s) => s.id === finalSessionId);
-            const isDefaultTitle = !currentSessionObj || currentSessionObj.title === "New Chat";
-            const newTitle = isDefaultTitle ? (userMessage.slice(0, 40) || "New Chat") : currentSessionObj.title;
+            const isDefaultTitle = !currentSessionObj || !currentSessionObj.title || currentSessionObj.title === "New Chat";
+            const titleToSave = isDefaultTitle ? newTitle : currentSessionObj.title;
 
             await setDoc(
               doc(db, `users/${user.uid}/sessions/${finalSessionId}`),
               {
-                title: newTitle,
+                title: titleToSave,
                 updatedAt: serverTimestamp(),
               },
               { merge: true }
