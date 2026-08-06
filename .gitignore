@@ -41,8 +41,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Ignore all README markdown files anywhere (case-insensitive)
-**/[Rr][Ee][Aa][Dd][Mm][Ee].[Mm][Dd]
+# Markdown documentation & extra notes (ignore all except main README)
+*.md
+**/*.md
+!README.md
+!readme.md
 
-# But keep the main build doc tracked
-!WHAT_WE_BUILT.md
+# Text notes & debug files
+*.txt
