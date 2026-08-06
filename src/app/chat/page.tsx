@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { Send, Bot, User, Sparkles, Plus, History, Settings, FileUp, Menu, Image as ImageIcon, X, LogIn, LogOut, Link2, FileText, FileImage, Zap, Download, Share2, Loader2, Database } from "lucide-react";
 import { auth, googleProvider, db } from "@/lib/firebase";
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
-import { collection, getDocs, orderBy, query, limit, setDoc, doc, serverTimestamp, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, limit, setDoc, doc, serverTimestamp, deleteDoc, addDoc } from "firebase/firestore";
 import ReactMarkdown from "react-markdown"; //Import the magic text fixer
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
