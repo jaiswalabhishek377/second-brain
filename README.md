@@ -22,8 +22,24 @@
 ## 📸 Interface & Dashboard Showcase
 
 <div align="center">
+  <h3>🖥️ Main Application Workspace</h3>
   <img src="public/dashboard.png" alt="Verba AI Second Brain Workspace" width="100%" />
   <p><em>Verba AI Second Brain Workspace — Featuring Dark-Mode Glassmorphism, Quick Prompts, PDF Ingestion, and Grounded Context Input.</em></p>
+  <br/>
+
+  <h3>📄 Page-Level RAG Citations & Integrated PDF Inspector</h3>
+  <img src="public/pdf_viewer_citations.png" alt="RAG Citations and Slide-in PDF Viewer" width="100%" />
+  <p><em>Exact chunk grounding with page-level similarity scores & direct slide-out PDF inspector.</em></p>
+  <br/>
+
+  <h3>📂 Session Management Sidebar & Deep Document Navigation</h3>
+  <img src="public/sidebar_history_pdf.png" alt="Sidebar Chat History and Document Inspection" width="100%" />
+  <p><em>Multi-session chat history sidebar paired with side-by-side document parsing.</em></p>
+  <br/>
+
+  <h3>🖼️ Multimodal Vision Processing & Action Tool Menu</h3>
+  <img src="public/multimodal_quiz.png" alt="Multimodal Image Analysis and Action Menu" width="100%" />
+  <p><em>Multimodal image understanding with Gemini Vision + Quick PDF / Image / Quiz action dropdown.</em></p>
 </div>
 
 ---
