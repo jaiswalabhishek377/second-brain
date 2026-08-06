@@ -448,8 +448,32 @@ export default function Home() {
       };
       setMessages((prev) => [...prev, botMsg]);
 
-      if (data.sessionId) {
-        setCurrentSessionId(data.sessionId);
+      const finalSessionId = data.sessionId || activeSession;
+      if (finalSessionId) {
+        setCurrentSessionId(finalSessionId);
+      }
+
+      // Persist user and bot messages to Firestore client-side with user auth
+      if (finalSessionId && user) {
+        try {
+          const messagesCol = collection(db, `users/${user.uid}/sessions/${finalSessionId}/messages`);
+          await addDoc(messagesCol, {
+            userMessage: userMessage,
+            botMessage: data.reply || "",
+            citations: data.citations || [],
+            timestamp: serverTimestamp(),
+            hasContext: (data.citations && data.citations.length > 0) || false,
+          });
+
+          // Update session metadata timestamp
+          await setDoc(doc(db, `users/${user.uid}/sessions/${finalSessionId}`), {
+            updatedAt: serverTimestamp(),
+          }, { merge: true });
+
+          await loadSessions(user.uid);
+        } catch (fsErr) {
+          console.error("Failed to save chat history to Firestore:", fsErr);
+        }
       }
 
       if (botMsg.citations && botMsg.citations.length > 0) {
