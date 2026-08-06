@@ -621,7 +621,10 @@ export default function Home() {
 
         {/* Recent History */}
         <div className="flex-1 overflow-y-auto p-4 space-y-2 mt-4">
-            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider pl-2 mb-2">Recent</div>
+            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider pl-2 mb-2 flex items-center gap-1.5">
+              <History size={13} className="text-slate-400" />
+              <span>Recent Chats</span>
+            </div>
             {sessions.length === 0 && (
               <div className="text-slate-600 text-sm px-3">No chats yet</div>
             )}

@@ -267,19 +267,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Failed to generate response" }, { status: 500 });
     }
 
-    // Citations are already sent separately, no need to append them to text
-
-    // 7. Save chat history to Firebase (per-user if logged in) with session support
+    // 7. Save chat history to Firebase (Commented out to prevent serverless unauthenticated permission warnings; handled client-side in chat/page.tsx)
+    /*
     try {
       let resolvedSessionId = sessionId as string | undefined;
 
       if (userId) {
-        // Ensure a session exists (create if missing)
         const sessionRef = resolvedSessionId
           ? doc(db, `users/${userId}/sessions/${resolvedSessionId}`)
           : doc(collection(db, `users/${userId}/sessions`));
 
-        // Create or update session metadata
         const sessionPayload: Record<string, any> = {
           title: (message as string).slice(0, 60) || "New Chat",
           updatedAt: serverTimestamp(),
@@ -289,7 +286,6 @@ export async function POST(req: Request) {
         }
 
         await setDoc(sessionRef, sessionPayload, { merge: true });
-
         resolvedSessionId = sessionRef.id;
 
         const messagesCol = collection(db, `users/${userId}/sessions/${resolvedSessionId}/messages`);
@@ -303,22 +299,10 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ reply: text, sessionId: resolvedSessionId, citations });
       }
-
-      // Fallback for unauthenticated usage
-      const targetCollection = collection(db, "chatHistory");
-      await addDoc(targetCollection, {
-        userMessage: message,
-        aiResponse: text,
-        timestamp: serverTimestamp(),
-        hasContext: hasRAGContext,
-        citations,
-      });
-
-      return NextResponse.json({ reply: text, citations });
     } catch (firebaseError) {
       console.log("Firebase save failed:", firebaseError);
-      // Continue even if Firebase fails
     }
+    */
 
     return NextResponse.json({ reply: text, sessionId: sessionId, citations });
 
