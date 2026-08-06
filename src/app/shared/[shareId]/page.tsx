@@ -46,10 +46,10 @@ export default function SharedDocumentPage() {
         const data = docSnap.data() as SharedChat;
         setSharedChat(data);
 
-        // Increment view count
-        await updateDoc(docRef, {
+        // Increment view count (safely catch if unauthenticated user views public chat)
+        updateDoc(docRef, {
           views: increment(1),
-        });
+        }).catch((vErr) => console.log("View count update skipped:", vErr));
 
         setLoading(false);
       } catch (err) {

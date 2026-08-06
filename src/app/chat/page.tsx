@@ -447,33 +447,45 @@ export default function Home() {
         citations: data.citations || [],
       };
       setMessages((prev) => [...prev, botMsg]);
+      setIsLoading(false); // Instantly dismiss loading spinner when AI response arrives
 
       const finalSessionId = data.sessionId || activeSession;
       if (finalSessionId) {
         setCurrentSessionId(finalSessionId);
       }
 
-      // Persist user and bot messages to Firestore client-side with user auth
+      // Persist user and bot messages to Firestore client-side (non-blocking)
       if (finalSessionId && user) {
-        try {
-          const messagesCol = collection(db, `users/${user.uid}/sessions/${finalSessionId}/messages`);
-          await addDoc(messagesCol, {
-            userMessage: userMessage,
-            botMessage: data.reply || "",
-            citations: data.citations || [],
-            timestamp: serverTimestamp(),
-            hasContext: (data.citations && data.citations.length > 0) || false,
-          });
+        (async () => {
+          try {
+            const messagesCol = collection(db, `users/${user.uid}/sessions/${finalSessionId}/messages`);
+            await addDoc(messagesCol, {
+              userMessage: userMessage,
+              botMessage: data.reply || "",
+              citations: data.citations || [],
+              timestamp: serverTimestamp(),
+              hasContext: (data.citations && data.citations.length > 0) || false,
+            });
 
-          // Update session metadata timestamp
-          await setDoc(doc(db, `users/${user.uid}/sessions/${finalSessionId}`), {
-            updatedAt: serverTimestamp(),
-          }, { merge: true });
+            // Update session title if currently "New Chat" or default
+            const currentSessionObj = sessions.find((s) => s.id === finalSessionId);
+            const isDefaultTitle = !currentSessionObj || currentSessionObj.title === "New Chat";
+            const newTitle = isDefaultTitle ? (userMessage.slice(0, 40) || "New Chat") : currentSessionObj.title;
 
-          await loadSessions(user.uid);
-        } catch (fsErr) {
-          console.error("Failed to save chat history to Firestore:", fsErr);
-        }
+            await setDoc(
+              doc(db, `users/${user.uid}/sessions/${finalSessionId}`),
+              {
+                title: newTitle,
+                updatedAt: serverTimestamp(),
+              },
+              { merge: true }
+            );
+
+            await loadSessions(user.uid);
+          } catch (fsErr) {
+            console.error("Failed to save chat history to Firestore:", fsErr);
+          }
+        })();
       }
 
       if (botMsg.citations && botMsg.citations.length > 0) {
@@ -482,8 +494,8 @@ export default function Home() {
     } catch (error) {
       console.error("Chat failed:", error);
       addToast("Sorry, something went wrong 😞", "error");
-    } finally {
       setIsLoading(false);
+    } finally {
       setImageData(null);
     }
   };

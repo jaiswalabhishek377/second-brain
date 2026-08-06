@@ -26,7 +26,8 @@ export async function POST(req: Request) {
       views: 0,
     });
 
-    const shareUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/shared/${shareId}`;
+    const origin = req.headers.get("origin") || (req.headers.get("referer") ? new URL(req.headers.get("referer")!).origin : null) || process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const shareUrl = `${origin}/shared/${shareId}`;
 
     return NextResponse.json({ shareId, shareUrl });
 
