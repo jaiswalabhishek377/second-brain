@@ -1,21 +1,37 @@
-# 🎯 VERBA — Next-Gen AI Second Brain & RAG Platform
+<div align="center">
 
-> **"Receipts-first AI knowledge assistant for instant document intelligence, multi-file retrieval, and page-level verifiable citations."**
+  <img src="public/xi.png" alt="Verba AI Logo" width="100" />
 
-[![Next.js](https://img.shields.io/badge/Next.js-16.1.1-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19.2.3-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
-[![Pinecone DB](https://img.shields.io/badge/Pinecone-Vector_Search-000000?style=for-the-badge&logo=pinecone)](https://www.pinecone.io/)
-[![Google Gemini](https://img.shields.io/badge/Google_Gemini-2.0_Flash-4285F4?style=for-the-badge&logo=google)](https://ai.google.dev/)
-[![Firebase](https://img.shields.io/badge/Firebase-Auth_%26_Firestore-FFCA28?style=for-the-badge&logo=firebase)](https://firebase.google.com/)
-[![Cloudinary](https://img.shields.io/badge/Cloudinary-Raw_PDF_Storage-3448C5?style=for-the-badge&logo=cloudinary)](https://cloudinary.com/)
+  # 🎯 VERBA — Next-Gen AI Second Brain & RAG Platform
+
+  > **"Receipts-first AI knowledge assistant for instant document intelligence, multi-file retrieval, and page-level verifiable citations."**
+
+  [![Next.js](https://img.shields.io/badge/Next.js-16.1.1-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+  [![React](https://img.shields.io/badge/React-19.2.3-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+  [![Pinecone DB](https://img.shields.io/badge/Pinecone-Vector_Search-000000?style=for-the-badge&logo=pinecone)](https://www.pinecone.io/)
+  [![Google Gemini](https://img.shields.io/badge/Google_Gemini-2.0_Flash-4285F4?style=for-the-badge&logo=google)](https://ai.google.dev/)
+  [![Firebase](https://img.shields.io/badge/Firebase-Auth_%26_Firestore-FFCA28?style=for-the-badge&logo=firebase)](https://firebase.google.com/)
+  [![Cloudinary](https://img.shields.io/badge/Cloudinary-Raw_PDF_Storage-3448C5?style=for-the-badge&logo=cloudinary)](https://cloudinary.com/)
+
+</div>
+
+---
+
+## 📸 Interface & Dashboard Showcase
+
+<div align="center">
+  <img src="public/dashboard.png" alt="Verba AI Second Brain Workspace" width="100%" />
+  <p><em>Verba AI Second Brain Workspace — Featuring Dark-Mode Glassmorphism, Quick Prompts, PDF Ingestion, and Grounded Context Input.</em></p>
+</div>
 
 ---
 
 ## 📋 Table of Contents
 
 - [Overview](#-overview)
+- [Interface & Dashboard Showcase](#-interface--dashboard-showcase)
 - [Key Features & Capabilities](#-key-features--capabilities)
 - [System Architecture](#-system-architecture)
 - [Technology Stack](#-technology-stack)
