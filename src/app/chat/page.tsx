@@ -351,7 +351,9 @@ export default function Home() {
       console.error("Export failed:", error);
       addToast("Export failed", "error");
     }
-   const shareChat = async () => {
+  };
+
+  const shareChat = async () => {
     if (messages.length === 0 || !user || !currentSessionId) {
       addToast("No chat to share", "info");
       return;
@@ -1215,7 +1217,6 @@ export default function Home() {
       </div>
     </div>
   );
-}
 }
 
 
